@@ -105,12 +105,15 @@ For gender, as a classification problem, I calculated the precision and recall a
 ![](pics/presentation_pics/confusion_matrix.png)
 
 **Ethnicity results**
+
 ![](pics/presentation_pics/ethnicity_results.png)
 
 **Age results**
+
 ![](pics/presentation_pics/age_results.png)
 
 **Gender results**
+
 ![](pics/presentation_pics/gender_results.png)
 
 ## Further Improvements
