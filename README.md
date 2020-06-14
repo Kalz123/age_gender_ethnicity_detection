@@ -11,13 +11,13 @@ Using transfer learning to leverage pre-trained model to enhance Accuracy.
 ### Data Collection
 #### Gettyimages Dataset
 
-![gettyimages](pics/presentation_pics/gettyimages.jpg)
+![](pics/presentation_pics/gettyimages.jpg)
 
 About 60,000 face images were scrapped from [gettyimages](https://www.gettyimages.com/editorial-images) website over 100 pages for each Ethnicity group by using a search term “human face” , setting number of people to 1 ,people composition to headshot and customizing a date range to a window before COVID-19.
 
 #### Wikipedia Dataset
 
-![wiki_dataset](pics/presentation_pics/wikipedia.png)
+![](pics/presentation_pics/wikipedia.png)
 
 Obtained a publicly available face image dataset with 62,328 images from [here](https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/) with gender and age labels for training.	 The features associated with these images are; face_location, name, gender, full_path, photo_taken, dob(date of birth).
 
