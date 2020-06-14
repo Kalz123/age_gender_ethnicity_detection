@@ -32,32 +32,32 @@ Delete images with:
 - Unclear face
 ### Wiki Dataset
 The following actions were taken for this dataset.
-Convert dob from Matlab serial date number format to Python datetime format.
+- Convert dob from Matlab serial date number format to Python datetime format.
 Drop observations with:
-Wrong dob
-No faces (face_score = inf)
-Second_face_score
-Face score < 3
-No gender Information
-Age more than 100
-Age below 0
-Unnecessary columns
+- Wrong dob
+- No faces (face_score = inf)
+- Second_face_score
+- Face score < 3
+- No gender Information
+- Age more than 100
+- Age below 0
+- Unnecessary columns
 
 ## Labeling
 ### Gettyimages Dataset
 I assigned 8 classes of labels of the following Ethnicity groups:
-Asian
-Black
-Caucasian
-Hispanic/Latino
-Mixed race
-Multi Ethnic group
-Native American
-Pacific islander
+- Asian
+- Black
+- Caucasian
+- Hispanic/Latino
+- Mixed race
+- Multi Ethnic group
+- Native American
+- Pacific islander
 ### Wiki Dataset
 The wiki dataset had 101 classes with age and gender labels as follows:
-Age: 0 to 100
-Gender: 0 for Female and 1 for Male
+- Age: 0 to 100
+- Gender: 0 for Female and 1 for Male
 
 ## Model
 I used a VGG-Face pre-trained on ImageNet model with 22 layers and 37 units , that was built by [Oxford Visual Geometry Group](http://www.robots.ox.ac.uk/~vgg/publications/2015/Parkhi15/poster.pdf) and the pre-trained [weights](https://drive.google.com/file/d/1CPSeum3HpopfomUEK1gybeuIVoeJT_Eo/view) shared by the [research group](http://www.robots.ox.ac.uk/~vgg/software/vgg_face/) , however, this file is matlab compatible ,it was converted to keras by [Sefik Ilkin Serengil](https://sefiks.com/2019/07/15/how-to-convert-matlab-models-to-keras/). 
@@ -65,91 +65,57 @@ I used a VGG-Face pre-trained on ImageNet model with 22 layers and 37 units , th
 
 
 ### Customized Model
+
+![](pics/presentation_pics/model.png)
 The model expects a 224 * 224 * 3 input size of images and returns a (2622,) dimensional vectors as an output.  First, the model recognizes the face and then extracts the features.
 The Face recognition is a combination of CNN and transfer learning. The face recognition pipeline consists of 4 stages;
-Face and eye detection: This can be handled by adaboost algorithm (there is no deep learning here). Some common Computer Vision packages in Python are OpenCv and Dlib. (model uses OpenCV’s face detection in the background)
-Alignment: This can easily be done if the face and eyes have been detected already. Experiments show that applying face alignment increases the accuracy of the model more than 1%. Some Math and Trigonometry is applied.
-Representation: Here, the model extracts vector dimensions of face images
-Verification/ Classification: Checks Eucledian distance or cosine similarity, VGG-16 model threshold for Eucleadian distance is about 0.5 and cosine similarity at 0.3. 
-Since the model has a lot of layers and neurons, it would take weeks to fit , therefore i customized the model by using only the last 3 layers that focus on the face in the image and froze all the first layers . I also changed my output layer,since its a classification problem I set the output layer to be the classes instead of 2622.
+- Face and eye detection: This can be handled by adaboost algorithm (there is no deep learning here). Some common Computer Vision packages in Python are OpenCv and Dlib. (model uses OpenCV’s face detection in the background)
+- Alignment: This can easily be done if the face and eyes have been detected already. Experiments show that applying face alignment increases the accuracy of the model more than 1%. Some Math and Trigonometry is applied.
+- Representation: Here, the model extracts vector dimensions of face images
+- Verification/ Classification: Checks Eucledian distance or cosine similarity, VGG-16 model threshold for Eucleadian distance is about 0.5 and cosine similarity at 0.3. 
 
+Since the model has a lot of layers and neurons, it would take weeks to fit , therefore I customized the model by using only the last 3 layers that focus on the face in the image and froze all the first layers . I also changed my output layer,since its a classification problem I set the output layer to be the classes instead of 2622.
 
+![](pics/presentation_pics/customized_model.png)
 
 Below is the model architecture of the VGG-Face model:
 
-
+![](pics/presentation_pics/model_architecture.png)
 
 ## Training
-Gender detection:  This is a binary classification problem, therefore I applied a binary crossentropy and sigmoid activation.
-Age detection: It is a multi-class classification problem and therefore i set the loss function to a categorical crossentropy and optimization algorithm is Adam, so that it converges the loss faster. I applied a softmax activation to the output.
- Ethnicity detection.  A similar setup for age detection was applied since this is also a multi-class classification problem
+**Gender detection**:  This is a binary classification problem, therefore I applied a binary crossentropy and sigmoid activation.
+**Age detection**: It is a multi-class classification problem and therefore i set the loss function to a categorical crossentropy and optimization algorithm is Adam, so that it converges the loss faster. I applied a softmax activation to the output.
+**Ethnicity detection**.  A similar setup for age detection was applied since this is also a multi-class classification problem.
 I created a chechpointer to monitor the model over iterations and avoid overfitting. Iterations with minimum validation loss will include the optimum weights, therefore i only save the best weights. For every Epoch, I add randomness with 256 instances(batch size) so as to avoid overfitting.
 
  The training process is illustrated below:
 
+![](pics/presentation_pics/training.png)
 
-
-Classification type
-Loss Function
-Optimizer
-Activation
-Age
-Multi-class
-Categorical cross-entropy
-Adam
-Softmax
-Gender 
-Binary
-Binary cross-entropy
-Adam
-Sigmoid
-Ethnicity
-Multi-class
-Categorical cross-entropy
-Adam
-Softmax
 
 ##  Model Evaluation
 The model is evaluated on the test set and the following loss and accuracy results are observed for the all the categories.
 
-
-
-Validation loss
-Accuracy
-Age
-3.30
-0.07
-Gender
-0.09
-0.98
-Ethnicity
-1.23
-0.55
+![](pics/presentation_pics/model_results.png)
 
 Age accuracy is not very intuitive.  Researchers developed an age prediction approach and converted a classification task to a regression problem,  and therefore propose that each softmax output should be multiplied with its label and the summation of the multiplications will be the age prediction.
 Since accuracy is not an intuitive metric, I applied the MAE metric to see the real change in error between the predicted age and real age. I got 5.4 , so the confidence interval between the predicted and actual age is 5.4 years, the model performed really well.
 For gender, as a classification problem, I calculated the precision and recall and an evaluation metric besides accuracy. My results for precision and recall were 0.979 and 0.975 respectively.
 
-
-
-Predict Female
-Predict Male
-Actual Female
-1283
-27
-Actual Male
-32
-3086
-
+![](pics/presentation_pics/confusion_matrix.png)
 
 **Ethnicity results**
+![](pics/presentation_pics/ethnicity_results.png)
 
 **Age results**
+![](pics/presentation_pics/age_results.png)
 
 **Gender results**
+![](pics/presentation_pics/gender_results.png)
 
 ## Further Improvements
-More data to avoid unbalanced classes
-Build a Multi-Output Model
+
+- More data to avoid unbalanced classes
+- Build a Multi-Output Model
 
 
