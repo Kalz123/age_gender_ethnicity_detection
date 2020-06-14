@@ -11,13 +11,13 @@ Using transfer learning to leverage pre-trained model to enhance Accuracy.
 ### Data Collection
 #### Gettyimages Dataset
 
-Insert image
+![gettyimages](pics/presentation_pics/gettyimages.jpg)
 
 About 60,000 face images were scrapped from [gettyimages](https://www.gettyimages.com/editorial-images) website over 100 pages for each Ethnicity group by using a search term “human face” , setting number of people to 1 ,people composition to headshot and customizing a date range to a window before COVID-19.
 
 #### Wikipedia Dataset
 
-Insert image
+![wiki_dataset](pics/presentation_pics/wikipedia.png)
 
 Obtained a publicly available face image dataset with 62,328 images from [here](https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/) with gender and age labels for training.	 The features associated with these images are; face_location, name, gender, full_path, photo_taken, dob(date of birth).
 
@@ -25,11 +25,11 @@ Obtained a publicly available face image dataset with 62,328 images from [here](
 ### Gettyimages Dataset
 The following actions were taken for this dataset:
 Delete images with:
-No face
-Facemasks
-Black and White Images
-More than 1 face
-Unclear face
+- No face
+- Facemasks
+- Black and White Images
+- More than 1 face
+- Unclear face
 ### Wiki Dataset
 The following actions were taken for this dataset.
 Convert dob from Matlab serial date number format to Python datetime format.
